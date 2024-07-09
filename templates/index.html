@@ -1,0 +1,230 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+//card script//
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var cost = parseFloat("{{ client_ava['prd_cost'] }}");
+    var price = parseFloat("{{ client_ava['prd_price'] }}");
+    var cogs = cost/price;
+    var form_cogs = (cogs * 100).toFixed(2);
+    document.getElementById('product-cost').innerHTML += (form_cogs) + "%";
+
+    var ave_check = parseFloat("{{ client_ava['prd_ave_check'] }}");
+    var m_sales = parseFloat("{{ client_ava['prd_sales_month'] }}");
+    var cust_qty = m_sales/ave_check;
+    var main_rev = parseFloat("{{ main_rev['rev_ammount'] }}");
+    var number_of_cust = main_rev/m_sales;
+    document.getElementById('cust_qty_m').innerHTML += cust_qty;
+    document.getElementById('numb_of_cust').innerHTML += number_of_cust;
+});
+
+
+
+</script>
+
+<body>
+
+
+
+<div class="row" style=" margin: 0 auto;">
+    <div class = "column" style = "width: 300px;" >
+
+        <div class="card shadow" style="margin-bottom: 1rem;">
+            <div class="card-body" style="text-align: left;">
+            <h6 class="card-title"style="text-align: center;"> Client's  Avatar</h6>
+            <p>Product: {{ client_ava['prd_name'] }}</p>
+            <p>Average check: {{ "{:,.2f}".format(client_ava['prd_ave_check']) }}</p>
+            <p id="product-cost">Product cost: </p>
+            <p id="cust_qty_m">Monthly purchases from one customer: </p>
+            <p id="numb_of_cust">Expected number of customers: </p>
+            </div>
+        </div>
+
+
+        <div class="card shadow" style="margin-bottom: 1rem;">
+            <div class="card-body" style = "width: flex;">
+                <h6 class="card-title">Profit & loss model</h6>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th colspan="5" class="text-center" >Revenues</th>
+                        </tr>
+                        {% for revenue in revenues_data %}
+                        <tr>
+                            <td class="text-start">{{ revenue.rev_name }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(revenue.rev_ammount) }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(revenue.percentage) }}%</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="5" class="text-center" >Expenses</th>
+                        </tr>
+                        {% for exp in expences_data %}
+                        <tr>
+                            <td class="text-start">{{ exp.exp_name }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(exp.exp_val) }}</td>
+                            <td class="text-end">{{ exp.percentage|round(2,'floor') }}%</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="5" class="text-center" >EBITDA</th>
+                        </tr>
+                        <tr>
+                            <td class="text-start">ebitda</td>
+                            <td class="text-end">{{ "{:,.2f}".format(ebitda) }}</td>
+                            <td class="text-end">{{ ebitda_sh|round(2,'floor') }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="column" style="width: auto; max-width: 90vw;">
+
+        <div class="card shadow" style="margin-bottom: 1rem; ">
+            <div class="card-body">
+                <h6 class="card-title">Bussines model canvas</h6>
+
+                <div class="row" style = "height: 70%;">
+                    <div class="col bordered" style="width: 20%;">
+                        <div class="tablef">Key Partners:</div>
+                        {% if canv %}
+                            <td class="text-center">{{ canv.partners }}</td>
+                        {% endif %}
+                    </div>
+
+                    <div class = "column" style="width: 20%; height: 100%; padding: 0; margin: 0;">
+                        <div class="col bordered" style = "height: 50%;">
+                            <div class="tablef">Key Activities:</div>
+                            {% if canv %}
+                                <td class="text-center">{{ canv.activities }}</td>
+                            {% endif %}
+                        </div>
+                        <div class="col bordered" style = "height: 50%;">
+                            <div class="tablef">Key Resources:</div>
+                            {% if canv %}
+                                <td class="text-center">{{ canv.resources }}</td>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col bordered" style="width: 20%;">
+                        <div class="tablef">Value Propositions:</div>
+                        {% if canv %}
+                            <td class="text-center">{{ canv.propositions }}</td>
+                        {% endif %}
+                    </div>
+                    <div class = "column" style="width: 20%; height: 100%; padding: 0; margin: 0;">
+                        <div class="col bordered" style = "height: 50%;">
+                            <div class="tablef">Customer Relationships:</div>
+                            {% if canv %}
+                                <td class="text-center">{{ canv.relationships }}</td>
+                            {% endif %}
+                        </div>
+                        <div class="col bordered" style = "height: 50%;">
+                            <div class="tablef">Channels:</div>
+                            {% if canv %}
+                                <td class="text-center">{{ canv.channels }}</td>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="col bordered" style="width: 20%;">
+                        <div class="tablef">Customer Segments:</div>
+                        {% if canv %}
+                            <td class="text-center">{{ canv.segments }}</td>
+                        {% endif %}
+                    </div>
+
+
+            </div>
+
+                <div class="row" style = "height: 25%;">
+                    <div class="col bordered" style="width: 50%;">
+                    <div class="tablef">Cost Structure:</div>
+                    {% if canv %}
+                        <td class="text-center">{{ canv.cost_structure }}</td>
+                    {% endif %}
+                    </div>
+
+                    <div class="col bordered" style="width: 50%;">
+                    <div class="tablef">Revenue Streams:</div>
+                    {% if canv %}
+                        <td class="text-center">{{ canv.rev_streams }}</td>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card shadow" style="margin-top: 1rem;">
+            <div class="card-body" >
+                <canvas id="PLchart"></canvas>
+            </div>
+        </div>
+        <div class="card shadow" style="margin-top: 1rem;">
+            <div class="card-body">
+                <p id="DispName" style="display: inline; font-weight: bold;"></p> <strong>{{ "{:,.2f}".format(form_result_year)}}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col text-end">
+            <button id="clear" class="btn btn-primary" type="clear" style="margin-top: 2rem;">Clear all data and try new product</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// chart script//
+let pl = {{ pl_data|tojson|safe }};
+let pl_values = pl.map(item => item.value);
+let ctx = document.querySelector('#PLchart').getContext('2d');
+let PLchart = new Chart(ctx, {
+    type: 'line',
+    data:{
+        labels:['I','II','III','IV','V','VI','VII', 'VIII','IX','X','XI','XII'],
+        datasets:[{
+            label: 'Profit and loss',
+            data:pl_values,
+            backgroundColor:'black',
+            fill:{
+                target: 'origin',
+                above: '#90EE90',
+                below: '#CF250B'
+            },
+            borderWidth: 4,
+        }]
+
+    },
+    options:{}
+})
+let DispName = document.getElementById('DispName');
+let result = {{ result_year|tojson }};
+if (result < 0) {
+    DispName.textContent = "Working capital needs:"
+}
+else {
+    DispName.textContent = "Total profit:"
+}
+
+
+document.getElementById("clear").addEventListener("click", function(event) {
+event.preventDefault();
+fetch('/index_clr',{method: 'POST'})
+.then(() => {
+    window.location.reload();
+});
+});
+</script>
+</body>
+
+{% endblock %}

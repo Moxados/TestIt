@@ -1,0 +1,187 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    PL forecast
+{% endblock %}
+
+{% block main %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var cost = parseFloat("{{ client_ava['prd_cost'] }}");
+    var price = parseFloat("{{ client_ava['prd_price'] }}");
+    var cogs = cost/price;
+    var form_cogs = (cogs * 100).toFixed(2);
+    document.getElementById('product-cost').innerHTML += (form_cogs) + "%";
+
+    var ave_check = parseFloat("{{ client_ava['prd_ave_check'] }}");
+    var m_sales = parseFloat("{{ client_ava['prd_sales_month'] }}");
+    var cust_qty = m_sales/ave_check;
+    var main_rev = parseFloat("{{ main_rev['rev_ammount'] }}");
+    var number_of_cust = main_rev/m_sales;
+    document.getElementById('cust_qty_m').innerHTML += cust_qty;
+    document.getElementById('numb_of_cust').innerHTML += number_of_cust;
+
+});
+</script>
+<div class="head">Profit and loss forecast</div>
+<div class="description">
+    P&L forecast, is a financial projection that estimates the revenues, expenses, and resulting profit or loss that a business expects to generate over a specific period of time in the future.
+</div>
+
+<div class = "row" style="margin: 1rem;">
+    <div class = "col-3  forecast-top">
+        <div class="card shadow">
+            <div class="card-body card-forecast" style="text-align: left;">
+            <h6 class="card-title" style="text-align: center;"> "Client's  Avatar"</h6>
+            <p>Product: {{ client_ava['prd_name'] }}</p>
+            <p>Average check: {{ "{:,.2f}".format(client_ava['prd_ave_check']) }}</p>
+            <p id="product-cost">Product cost: </p>
+            <p id="cust_qty_m">Monthly purchases from one customer: </p>
+            <p id="numb_of_cust">Expected number of customers: </p>
+            </div>
+        </div>
+    </div>
+    <div class = "col-3  forecast-top">
+        <div class="card shadow">
+            <div class="card-body card-forecast">
+                <form action="/plforecast" method="post">
+                    <h6 class="card-title"> Scenario "constant sales growth rate" </h6>
+                    <p>In this scenario, the model calculates the profit and loss (PL) achieved over a 12-month period. The necessary input is the rate of monthly growth.</p>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="growth_rate" name="growth_rate" required>
+                            <label for="growth_rate">monthly growth_rate in %</label>
+                        </div>
+                    <button class="btn btn-primary" type="submit" style="margin-top: 0rem;">calculate PL</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class = "col-3  forecast-top">
+        <div class="card shadow">
+            <div class="card-body card-forecast">
+
+            </div>
+        </div>
+    </div>
+    <div class = "col-3  forecast-top">
+        <div class="card shadow">
+            <div class="card-body card-forecast">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class = "row" style="margin: 1rem;">
+    <div class = "col-3" style="width: 300px; margin-bottom: 1rem;">
+        <div class="card shadow">
+            <div class="card-body" >
+                <h6 class="card-title">Profit & loss model</h6>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="3" class="text-center">Revenues</th>
+                        </tr>
+                        {% for revenue in revenues_data %}
+                        <tr>
+                            <td class="text-start">{{ revenue.rev_name }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(revenue.rev_ammount) }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(revenue.percentage) }}%</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="3" class="text-center">Expenses</th>
+                        </tr>
+                        {% for exp in expences_data %}
+                        <tr>
+                            <td class="text-start">{{ exp.exp_name }}</td>
+                            <td class="text-end">{{ "{:,.2f}".format(exp.exp_val) }}</td>
+                            <td class="text-end">{{ exp.percentage|round(2,'floor') }}%</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="3" class="text-center">EBITDA</th>
+                        </tr>
+                        <tr>
+                            <td class="text-start">ebitda</td>
+                            <td class="text-end">{{ "{:,.2f}".format(ebitda) }}</td>
+                            <td class="text-end">{{ ebitda_sh|round(2,'floor') }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class = "col" style=" width: 80vw; margin-bottom: 1rem;">
+        <div class="card shadow">
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Period</th>
+                            <th class="text-center">I</th>
+                            <th class="text-center">II</th>
+                            <th class="text-center">III</th>
+                            <th class="text-center">IV</th>
+                            <th class="text-center">V</th>
+                            <th class="text-center">VI</th>
+                            <th class="text-center">VII</th>
+                            <th class="text-center">VIII</th>
+                            <th class="text-center">IX</th>
+                            <th class="text-center">X</th>
+                            <th class="text-center">XI</th>
+                            <th class="text-center">XII</th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <th colspan="13" class="text-center">Revenues</th>
+                        </tr>
+                    <tbody>
+                        {% for list in dict_rev %}
+                        <tr>
+                            <td class="text-start">{{ list }}</td>
+                            {% for val in dict_rev[list] %}
+                                <td class="text-end">{{ "{:,.2f}".format(val) }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="13" class="text-center">Expences</th>
+                        </tr>
+                        {% for list in dict_exp %}
+                        <tr>
+                            <td class="text-start">{{ list }}</td>
+                            {% for val in dict_exp[list] %}
+                                <td class="text-end">{{ "{:,.2f}".format(val) }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+
+                        <tr>
+                            <th colspan="13" class="text-center">EBITDA</th>
+                        </tr>
+
+                        <tr>
+                            <td class="text-start">PL</td>
+                            {% for val in dict_pl %}
+                            <td class="text-end">{{ "{:,.2f}".format(val['value']) }}</td>
+                            {% endfor %}
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

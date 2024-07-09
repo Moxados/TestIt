@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Canvas model
+{% endblock %}
+
+{% block main %}
+
+<body>
+  <div class="head">Business Model Canvas</div>
+  <div class="description">
+    Canvas is a strategic management tool used by businesses to describe, design, challenge, and invent business models. It provides a visual framework for brainstorming and analyzing various aspects of a business model in a concise and structured manner. The canvas consists of nine key building blocks that represent the critical components of a business model:
+  </div>
+  <form action="/canvas" method="post">
+
+
+            <div class="row">
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">1. Key partners are the companies or people your business works with to create a strategic relationship.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="partners" name="partners" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">2. Key Activities are specific activities or tasks that are fundamental to the operation of your business.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="activities" name="activities">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">3. Key Resources are the assets necessary to operate and deliver your value proposition.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="resources" name="resources">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">4. Value Propositions:are arguably the most important element of the business model canvas template. The value proposition determines the fundamental offering the company is trying to give its customers.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="propositions" name="propositions">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">5. Customer Relationships are the different types of interactions a company has with its customers.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="relationships" name="relationships">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">6. Channels are the different structures and methods that are used to deliver your company’s product and value proposition to its customers.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="channels" name="channels">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">7. Customer Segments are the different types of customers that a company manages. A company that produces different products will need to interact with different types of customers.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="segments" name="segments">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">8. Cost Structure refers to how a company spends money on operations. It consists of the company’s key costs and the company’s level of focus on costs.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="structure" name="structure">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col">
+                <div class="card shadow">
+                  <div class="card-body-canvas">
+                    <div class="card-title">9. Revenue Streams are the different ways your company’s value proposition generates money.</div>
+                    <div class="form-floating mb-3">
+                      <input type="text" class="form-control" id="streams" name="streams">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+</body>
+
+
+
+
+
+<button class="btn btn-primary" type="submit" style="margin-top: 2rem;">Save</button>
+
+{% endblock %}

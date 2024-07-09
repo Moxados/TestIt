@@ -1,0 +1,222 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Revenues model
+{% endblock %}
+
+{% block main %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <form action="rev" method="post">
+    <script>
+    let msales = 0;
+
+    // extract data from DB
+    $.ajax({
+      url: '/client_data',
+      type: 'GET',
+      success: function(data) {
+        if (data && data[0].prd_sales_month) {
+          msales = parseFloat(data[0].prd_sales_month);
+          main_prod_name = (data[0].prd_name);
+
+        } else {
+          // Handle case where data or prd_sales_month is missing
+          console.error("Failed to retrieve prd_sales_month from server data.");
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error("AJAX request to /client_data failed:", status, error);
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+      let custqty = document.getElementById('cust_qty');
+      let DispSales = document.getElementById('DispSales');
+      let DispSales2 = document.getElementById('DispSales2');
+      let DispName = document.getElementById('DispName');
+      let oth_select = 1;
+      let oth_sales = 0;
+      let oth_name = 0;
+      let oth_type = 0;
+      let x = 0;
+
+      let oth_product = document.getElementById('other_product');
+      let oth_amount = document.getElementById('other_amount'); //update here
+      let other_type = document.querySelector('.other_type'); //select
+
+      //let DispOthName = document.getElementById('DispOthName');
+      //let DispOthAmount = document.getElementById('DispOthAmount');
+
+      let sub_tot_rev = 0;
+      let totrevenues = parseFloat(oth_sales) + msales * parseFloat(custqty.value); //display total revenue
+      let DispTotRev = document.getElementById('DispTotRev');
+
+      custqty.addEventListener('input', upsales);
+      oth_product.addEventListener('input', upsales);
+      oth_amount.addEventListener('input', upsales);
+      other_type.addEventListener('change', upsales);
+
+      function upsales() {
+
+        oth_select = other_type.value;
+        if (parseFloat(oth_select) !==1){
+                oth_sales = oth_amount.value * msales * parseFloat(custqty.value)*0.01;
+        }
+                else{
+                oth_sales = oth_amount.value;
+        }
+        console.log("upsale called");
+        DispSales.textContent = (msales * parseFloat(custqty.value)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        DispSales2.textContent = (msales * parseFloat(custqty.value)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        DispName.textContent = main_prod_name;
+        //DispOthName.textContent = oth_product.value;
+        oth_name = oth_product.value;
+        oth_sh_amt = oth_amount.value;
+
+        //DispOthAmount.textContent = oth_sales;
+        //totrevenues = parseFloat(sub_tot_rev) + msales * parseFloat(custqty.value);
+        //DispTotRev.textContent = "TOTAL REVENUES: $" + totrevenues;
+      }
+        //function of "add" button
+      document.getElementById("save").addEventListener("click", function(event) {
+      event.preventDefault();
+
+      let table = document.getElementById('rev_table');
+      let row = document.createElement('tr');
+      let cell1 = document.createElement('td');
+      let cell2 = document.createElement('td');
+      cell1.textContent = oth_name;
+      cell2.textContent = parseFloat(oth_sales).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      cell1.style.textAlign = "left";
+      cell2.style.textAlign = "right";
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      let tableBody = document.getElementById('rev_table').getElementsByTagName('tbody')[0];
+      tableBody.appendChild(row);
+
+      let oth_rev = {oth_name, oth_sales, oth_select, oth_sh_amt};
+      fetch('/other_rev', {method: 'POST',headers: {'Content-Type': 'application/json',},
+      body: JSON.stringify(oth_rev),
+      })
+      .then(response => {
+      if (response.ok) {
+
+        alert("Saved!");
+      }
+      })
+      sub_tot_rev += parseFloat(oth_sales);
+      totrevs = parseFloat(sub_tot_rev) + msales * parseFloat(custqty.value);
+      totrevenues =totrevs.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      DispTotRev.textContent = "TOTAL REVENUES: " + totrevenues.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+
+    });
+
+
+    });
+
+    </script>
+
+    <div class="head">Revenues model</div>
+    <div class="description">
+      PL model refer to a financial model used to analyze and forecast a company's profit and loss statement. These models typically involve forecasting revenue, expenses, and ultimately, the net profit or loss for a given period. In this part we modeling our revenues.
+    </div>
+
+<!--revenue -->
+<div class="row">
+  <div class="col">
+    <div class="card shadow">
+        <div class="card-body card-rev">
+          <h6 class="card-title">Revenue</h6>
+          <div class="card-title">refers to the total income generated by a business or organization from its normal business activities.</div>
+          {% for item in client_data %}
+            <p> Monthly revenue per customer {{ "{:.2f}".format(item.prd_sales_month) }} </p>
+          {% endfor %}
+
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="cust_qty" name="cust_qty" required>
+            <label for="cust_qty">quantity of clients</label>
+          </div>
+
+          <p>Revenue per month</p>
+          <div id="DispSales"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--other revenue -->
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body card-rev" >
+          <h6 class="card-title">Other revenues</h6>
+          <div class="card-title"> refers to income generated by a business or organization from sources other than its primary activities or core operations.</div>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="other_product" name="other_product" required>
+            <label for="other_product">product name</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="other_amount" name="other_amount" required>
+            <label for="other_amount">amount or % of sales</label>
+          </div>
+
+          <select class="other_type" name="other_type" id="other_type" aria-label="Default select example" required>
+            <option value="1" disabled selected>Choose amount or %</option>
+            <option value="1">amount</option>
+            <option value="%">% of sales</option>
+          </select>
+
+          <button id="save" class="btn btn-primary" type="save" style="margin-top: 2rem;">save / add new</button>
+
+        </div>
+      </div>
+    </div>
+
+    <!--TOTAL REVENUES -->
+    <div class="col">
+    <div class="card shadow">
+      <div class="card-body card-rev">
+        <h6 class="card-title">Total revenues</h6>
+
+        <table id="rev_table" class="table table-striped">
+          <thead>
+              <tr>
+                  <th class="text-start"></th>
+                  <th class="text-end"></th>
+              </tr>
+          </thead>
+
+          <tbody>
+              <tr>
+                  <td class="text-start"><p id="DispName"></p></td>
+                  <td class="text-end"><p id="DispSales2"></p></td>
+              </tr>
+
+
+          </tbody>
+
+      </table>
+      <p id="DispTotRev"></p>
+
+      </div>
+    </div>
+  </div>
+
+<div class="row">
+    <div class="col text-end">
+        <button class="btn btn-primary" type="submit" style="margin-top: 2rem;">Save</button>
+    </div>
+</div>
+
+
+</body>
+
+
+
+{% endblock %}

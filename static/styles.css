@@ -1,0 +1,209 @@
+body {
+    background-color: #fff;
+    color: #212529;
+
+    font-weight: 400;
+    line-height: 1.5;
+
+    text-align: left;
+}
+
+.logo{
+    color: white;
+    font-weight: bold;
+    font-size: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-shadow {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Adjust values as needed */
+}
+
+.nav-item {
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.head {
+    color: darkgreen;
+    text-align: center;
+    font-weight: bold;
+
+}
+.header {
+    background-color: #90EE90;
+    color: #00A36C;
+
+    padding: 2rem 1rem;
+    text-align: center;
+
+
+}
+.description {
+    background-color: #FFF;
+    color: green;
+    padding: 0rem 1rem;
+    text-align: center;
+}
+
+
+.col {
+    margin: 1rem;
+
+}
+
+
+
+.form-select {
+    color: #5A5A5A;
+    text-align: center;
+}
+.card-body {
+    text-align: center;
+    font-size: 14px;
+
+}
+
+.form-control {
+    font-size: 14px;
+}
+
+
+
+.formcanv {
+    background-color: #FFF;
+    color: #5A5A5A;
+
+    padding: 1rem 1rem;
+
+    text-align: center;
+
+
+}
+.tablef{
+    text-align: center;
+    font-weight: bold;
+    word-wrap: break-word;
+    font-size: 14px;
+    color: #5A5A5A;
+
+
+}
+.carousel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-caption {
+    position: absolute;
+    bottom:0;
+    color: grey;
+    background-color: white;
+}
+
+
+
+.carousel-item{
+    width: 800px;
+    height: 600px;
+    margin: auto;
+
+}
+
+.CLper{
+    color: #adb5bd;
+    border-color: #ced4da;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.other_type{
+    color: #adb5bd;
+    border-color: #ced4da;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.exp_type{
+    color: #adb5bd;
+    border-color: #ced4da;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.col_in_pl{
+    width: 400px;
+    height: 800px;
+}
+
+/* format of canvas on index page */
+
+.card-body-canvas{
+    min-height: 150px;
+    margin: 1rem;
+    font-size: 14px;
+    color: #5A5A5A;
+}
+
+.bordered {
+    border: 1px solid #dce0e4;
+    border-radius: 5px;
+}
+
+.card-ava {
+    height: 300px;
+    width: flex;
+}
+
+.card-rev {
+    height: 400px;
+    width: flex;
+}
+
+.card-exp {
+    height: 400px;
+
+    width: flex;
+}
+
+.btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 2rem;
+    width: 200px;
+    height: 50px;
+}
+
+.btn:hover {
+    background-color: darkgreen; /* Change to your desired hover color */
+    color: white; /* Change to the text color you prefer */
+}
+
+.forecast-top {
+
+    width: flex;
+    min-width: 255px;
+    margin-bottom: 1rem;
+}
+
+.card-forecast{
+    height: 320px;
+}
+
+#clear {
+    width: auto; /* or any other value */
+}

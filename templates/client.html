@@ -1,0 +1,162 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Clinet
+{% endblock %}
+
+{% block main %}
+<body>
+  <form action="/client" method="post">
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let ave = 0;
+      let periodratio = 1;
+
+
+      let inPer = document.querySelector('.CLper');
+
+      let inPrice = document.getElementById('CLprice');
+      let inQuant = document.getElementById('CLquantity');
+      let inFreq = document.getElementById('CLfreq');
+
+      let DispAvecheck = document.getElementById('DispAvecheck');
+      let DispMonthSales = document.getElementById('DispMonthSales');
+
+      inPrice.addEventListener('input',updaverage);
+      inQuant.addEventListener('input',updaverage);
+      inFreq.addEventListener('input',updsales);
+      inPer.addEventListener('change', updatePeriodRatio);
+
+
+      function updaverage(){
+        let price = parseFloat(inPrice.value);
+        let quantity = parseFloat(inQuant.value);
+        ave = price * quantity;
+        DispAvecheck.textContent = "Average check: $ " + ave.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        updsales();
+      }
+
+      function updatePeriodRatio(){
+        periodratio = parseInt(inPer.value);
+        updsales();
+      }
+
+
+      function updsales(){
+        let freq = parseFloat(inFreq.value);
+        let sales = freq * ave * periodratio;
+        DispMonthSales.textContent = "Sales per month: $ " + sales.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      }
+    });
+
+
+    </script>
+    <div class="head">Our Client</div>
+    <div class="description">
+        Let's start creating an avatar of our future client. We need to fill the first three blocks
+    </div>
+
+<!--first block type of client -->
+<div class="row">
+  <div class="col">
+    <div class="card shadow">
+        <div class="card-body card-ava" >
+          <h6 class="card-title">Our client is:</h6>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="legal" id="CLlegal" name="legal" >
+            <label class="form-check-label" for="CLlegal">
+              Legal entity
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="private" id="CLprivate" name="private">
+            <label class="form-check-label" for="CLprivate" >
+              Private person
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--second block product -->
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-body card-ava" >
+          <h6 class="card-title">Our product is:</h6>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="CLproduct" name="CLproduct" required>
+            <label for="CLproduct">product name</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="CLprice" name="CLprice" required>
+            <label for="CLprice">product price</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="CLcost" name="CLcost" required>
+            <label for="CLcost">product cost</label>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+<!--third block type frequency -->
+    <div class="col">
+    <div class="card shadow">
+      <div class="card-body card-ava" >
+        <h6 class="card-title">Our check is:</h6>
+        <div class="form-floating mb-3">
+          <input type="number" class="form-control" id="CLquantity" name="CLquantity" required>
+          <label for="CLquantity" style="hyphens: auto;">product quantity in one check</label>
+        </div>
+        <h6 class="card-title">How often?</h6>
+        <div class="form-floating mb-3">
+          <input type="number" class="form-control" id="CLfreq" name="CLfreq" required>
+          <label for="CLfreq">customer will return</label>
+        </div>
+        <select class="CLper" name="period" aria-label="Default select example" required>
+          <option value="" disabled selected>Choose period</option>
+          <option value="30">every day</option>
+          <option value="4">every week</option>
+          <option value="1">every month</option>
+          <option value="0.083">every year</option>
+        </select>
+
+      </div>
+    </div>
+    </div>
+<!--fourth block client avatar-->
+    <div class="col">
+    <div class="card shadow" >
+      <div class="card-body card-ava" >
+        <h6 class="card-title">The clients avatar:</h6>
+
+        <div id="DispAvecheck"></div>
+        <div id="DispMonthSales"></div>
+
+      </div>
+    </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit" style="margin-top: 2rem;"><div id="DispButton"></div></button>
+  </form>
+
+<script>
+  let DispButton = document.getElementById('DispButton');
+  let but_ch = {{ check_bt|tojson }};
+  if (but_ch == 1) {
+    DispButton.textContent = "Delete data / add new"
+  }
+  else {
+    DispButton.textContent = "Save"
+  }
+</script>
+
+</body>
+
+
+
+{% endblock %}
