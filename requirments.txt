@@ -94,3 +94,4 @@ websockets==12.0
 Werkzeug==3.0.2
 wheel==0.43.0
 zopfli==0.2.3
+gunicorn
