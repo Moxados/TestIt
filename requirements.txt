@@ -21,7 +21,6 @@ compare50==1.2.6
 contourpy==1.2.1
 cryptography==42.0.5
 cs50==9.3.4
-CS50-VSIX-Client @ file:///opt/cs50/extensions/cs50vsix-client
 cssselect2==0.7.0
 cycler==0.12.1
 djhtml==3.0.6
